@@ -20,3 +20,10 @@ services:
     restart: always
     ports:
       - 28080:8080
+    networks:
+      - db-network
+
+networks:
+  db-network:
+    name: db-network
+    driver: bridge
