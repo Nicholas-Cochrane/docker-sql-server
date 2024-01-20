@@ -31,6 +31,8 @@ services:
       context: .
       dockerfile: dockerfile
     restart: always
+    ports:
+      - 38080:8080
     environment:
       - TZ=America/Los_Angeles
 

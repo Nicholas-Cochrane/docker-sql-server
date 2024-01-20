@@ -1,5 +1,8 @@
-f = open("example.txt", "a")
-f.write("Hello world")
-f.close()
-while(True):
-    print("this is a test")
+from aiohttp import web
+async def hello(request):
+    return web.Response(text="hello world")
+app = web.Application()
+app.add_routes([web.get('/', hello)])
+
+web.run_app(app)
+
