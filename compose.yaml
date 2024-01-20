@@ -24,6 +24,7 @@ services:
       - db-network
       - default
 
+# Note: may need to run docker compse build before docker compose up
   python-server:
     container_name: python-server
     build:
