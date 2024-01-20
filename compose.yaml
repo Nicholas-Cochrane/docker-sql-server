@@ -24,6 +24,15 @@ services:
       - db-network
       - default
 
+  python-server:
+    container_name: python-server
+    build:
+      context: .
+      dockerfile: dockerfile
+    restart: always
+    environment:
+      - TZ=America/Los_Angeles
+
 networks:
   default:
     name: docker-sql-server_default 
