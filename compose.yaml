@@ -22,8 +22,12 @@ services:
       - 28080:8080
     networks:
       - db-network
+      - default
 
 networks:
+  default:
+    name: docker-sql-server_default 
+    driver: bridge
   db-network:
     name: db-network
     driver: bridge
