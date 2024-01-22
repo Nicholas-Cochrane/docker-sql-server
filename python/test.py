@@ -9,15 +9,26 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
+logger.info("Begin Script")
+
+stringi = """INSERT INTO \"readings\" (\"id\", \"sensor\", \"value\", \"time\") VALUES 
+            (\'{mac}\', \'{sensor}\', \'{value}\', now());"""
+stringf = """INSERT INTO \"readings\" (\"id\", \"sensor\", \"value\", \"time\") VALUES 
+            (\'{mac}\', \'{sensor}\', \'{value:.1f}\', now());"""
+
 f = open("pass.txt", "r")
 dbpass = f.read()
 f.close()
+dbpass = dbpass[0:-1] #remove newline char
 
-logger.info(dbpass)
+#logger.info('"' + dbpass + '"')
 
-conn = psycopg2.connect(dbname="sensors", user="postgres", password= dbpass, host="db")
+#if you have trouble connecting to server in docker try adding the lines
+#pg_hba.conf < host all all all md5
+#postgresql.conf < listen_adresses = '*'
+conn = psycopg2.connect(dbname="sensors", user="postgres", password=dbpass, host="db")
 
-logger.info("HELLO WORLD!")
+logger.info("Connected to DB")
 
 async def getResponse(request):
     return web.Response(text="This URL is primaraly for POST. This is not a page.")
@@ -28,13 +39,17 @@ async def processSensorReadings(request: web.Request) -> web.Response:
     logger.info(sensor_id)
     try:
         readings = await request.json()
-        cur = con.cursor()
+        cur = conn.cursor()
         for k,v in readings.items():
             logger.info(k)
             logger.info(v)
             logger.info(type(v))
-
-            cur.close()
+            if(type(v) == int and k != "boot"):
+                cur.execute(stringi.format(mac=sensor_id, sensor=k, value=v))
+            elif(type(v) == float and k != "boot"):
+                cur.execute(stringf.format(mac=sensor_id, sensor=k, value=v))
+        cur.close()
+        conn.commit()
     except ValidationError:
         logger.error("Bad request from %s: %s", sensor_id, await request.text())
         return web.Response(status=400)
