@@ -46,7 +46,10 @@ CREATE TABLE readings(
 		ON DELETE NO ACTION
 );
 
-
+CREATE TABLE events(
+	time TIMESTAMP NOT NULL,
+	description TEXT NOT NULL
+);
 
 
 --USERS
