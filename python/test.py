@@ -11,9 +11,9 @@ logger.setLevel(logging.DEBUG)
 
 logger.info("Begin Script")
 
-stringi = """INSERT INTO \"readings\" (\"id\", \"sensor\", \"value\", \"time\") VALUES 
+stringi = """INSERT INTO \'readings\' (\'id\', \'sensor\', \'value\', \'time\') VALUES 
             (\'{mac}\', \'{sensor}\', \'{value}\', now());"""
-stringf = """INSERT INTO \"readings\" (\"id\", \"sensor\", \"value\", \"time\") VALUES 
+stringf = """INSERT INTO \'readings\' (\'id\', \'sensor\', \'value\', \'time\') VALUES 
             (\'{mac}\', \'{sensor}\', \'{value:.1f}\', now());"""
 
 f = open("pass.txt", "r")
@@ -26,7 +26,7 @@ dbpass = dbpass[0:-1] #remove newline char
 #if you have trouble connecting to server in docker try adding the lines
 #pg_hba.conf < host all all all md5
 #postgresql.conf < listen_adresses = '*'
-conn = psycopg2.connect(dbname="sensors", user="postgres", password=dbpass, host="db")
+conn = psycopg2.connect(dbname="sensors", user="python_insert_only", password=dbpass, host="db")
 
 logger.info("Connected to DB")
 
