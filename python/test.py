@@ -41,9 +41,9 @@ async def processSensorReadings(request: web.Request) -> web.Response:
         readings = await request.json()
         cur = conn.cursor()
         for k,v in readings.items():
-            logger.info(k)
-            logger.info(v)
-            logger.info(type(v))
+#            logger.info(k)
+#            logger.info(v)
+#            logger.info(type(v))
             if(type(v) == int and k != "boot"):
                 cur.execute(stringi.format(mac=sensor_id, sensor=k, value=v))
             elif(type(v) == float and k != "boot"):
