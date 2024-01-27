@@ -1,4 +1,25 @@
+CREATE DATABASE sensors;
+\c sensors
 
+CREATE TABLE devices(
+	id TEXT NOT NULL,
+	name TEXT NOT NULL,
+	PRIMARY KEY(id)
+);
+
+INSERT INTO devices (id,name) VALUES ('000000000000',"Test ID");
+
+CREATE TABLE readings(
+	id TEXT NOT NULL,
+	sensor TEXT NOT NULL,
+	value NUMERIC, -- may change to float(4)
+	time TIMESTAMP NOT NULL,
+	PRIMARY KEY(id, sensor, time),
+	CONSTRAINT fk_id
+		FOREIGN KEY (id)
+		REFERENCES devices(id)
+		ON DELETE NO ACTION
+);
 
 
 
