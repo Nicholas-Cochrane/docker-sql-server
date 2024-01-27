@@ -9,6 +9,27 @@ CREATE TABLE devices(
 
 INSERT INTO devices (id,name) VALUES ('000000000000',"Test ID");
 
+CREATE TABLE sensors(
+	sensor_id TEXT NOT NULL,
+	name TEXT NOT NULL,
+	unit_abbreviation TEXT,
+	unit_full TEXT,
+	PRIMARY KEY(sensor_id)
+);
+
+INSERT INTO sensors (sensor_id, name, unit_abbreviation, unit_full) VALUES 
+	('atmp','Temperature','C','Celsius'),
+	('nox_index', 'NOx Index','NOx','24h rolling avg. Index of NOx from 1'),
+	('pm01', 'Particulate Matter 1', 'PM01', 'Particulate matter with a diameter of fewer than 1 micron'),
+	('pm02', 'Particulate Matter 2.5', 'PM2.5', 'Particulate matter with a diameter of less than 2.5 microns'),
+	('pm10', 'Particulate Matter 10', 'PM10', 'Particulate matter with a diameter of less than 2.5 microns'),
+	('rco2', 'Carbon Dioxide', 'ppm', 'Carbon dioxide parts per million'),
+	('rhum', 'Humidity', '%', 'Relative humidity'),
+	('tvoc_index', 'Total Volatile Organic Compound Index', 'TVOC', '24h rolling avg. Index of TVOCs from 100'),
+	('wifi', 'Wifi Signal', 'RSSI', 'Received signal strength indicator'),
+	('test','Test Entry', NULL, NULL)
+	;
+
 CREATE TABLE readings(
 	id TEXT NOT NULL,
 	sensor TEXT NOT NULL,
@@ -18,6 +39,10 @@ CREATE TABLE readings(
 	CONSTRAINT fk_id
 		FOREIGN KEY (id)
 		REFERENCES devices(id)
+		ON DELETE NO ACTION,
+	CONSTRAINT fk_sensor
+		FOREIGN KEY (sensor)
+		REFERENCES sensors(sensor_id)
 		ON DELETE NO ACTION
 );
 
