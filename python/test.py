@@ -1,6 +1,7 @@
 from aiohttp import web
 import logging
 import psycopg2
+from psycopg2 import sql
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
@@ -11,10 +12,8 @@ logger.setLevel(logging.DEBUG)
 
 logger.info("Begin Script")
 
-stringi = """INSERT INTO readings (id, sensor, value, time) VALUES 
-            (\'{mac}\', \'{sensor}\', \'{value}\', now());"""
-stringf = """INSERT INTO readings (id, sensor, value, time) VALUES 
-            (\'{mac}\', \'{sensor}\', \'{value:.1f}\', now());"""
+query = """INSERT INTO readings (id, sensor, value, time) VALUES 
+            (%s,%s,%s, now());"""
 
 f = open("pass.txt", "r")
 dbpass = f.read()
@@ -40,14 +39,12 @@ async def processSensorReadings(request: web.Request) -> web.Response:
     try:
         readings = await request.json()
         cur = conn.cursor()
-        for k,v in readings.items():
-#            logger.info(k)
-#            logger.info(v)
-#            logger.info(type(v))
-            if(type(v) == int and k != "boot"):
-                cur.execute(stringi.format(mac=sensor_id, sensor=k, value=v))
-            elif(type(v) == float and k != "boot"):
-                cur.execute(stringf.format(mac=sensor_id, sensor=k, value=v))
+        for sensor,value in readings.items():
+#            logger.info(sensor)
+#            logger.info(value)
+#            logger.info(type(value))
+            if(sensor != "boot"):
+                cur.execute(sql.SQL(query), (sensor_id, sensor, value))
         cur.close()
         conn.commit()
     except ValidationError:
