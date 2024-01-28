@@ -11,9 +11,9 @@ logger.setLevel(logging.DEBUG)
 
 logger.info("Begin Script")
 
-stringi = """INSERT INTO \'readings\' (\'id\', \'sensor\', \'value\', \'time\') VALUES 
+stringi = """INSERT INTO readings (id, sensor, value, time) VALUES 
             (\'{mac}\', \'{sensor}\', \'{value}\', now());"""
-stringf = """INSERT INTO \'readings\' (\'id\', \'sensor\', \'value\', \'time\') VALUES 
+stringf = """INSERT INTO readings (id, sensor, value, time) VALUES 
             (\'{mac}\', \'{sensor}\', \'{value:.1f}\', now());"""
 
 f = open("pass.txt", "r")
