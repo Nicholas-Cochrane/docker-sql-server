@@ -23,6 +23,21 @@ services:
     networks:
       - db-network
       - default
+  
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    user: 995:100
+    ports:
+     - 3000:3000
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+    environment:
+      - TZ=America/Los_Angeles
+    networks:
+      - db-network
+      - default
 
 # Note: may need to run docker compse build before docker compose up
   python-server:
@@ -37,7 +52,7 @@ services:
       - db
     environment:
       - TZ=America/Los_Angeles
-
+  
 networks:
   default:
     name: docker-sql-server_default 
