@@ -1,6 +1,6 @@
 .env
 postgres/
-grafana/
+grafana/data/**
 !grafana/data/grafana.db
-!grafana/data/alerting/*
+!grafana/data/alerting/**
 pass.txt
