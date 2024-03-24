@@ -4,6 +4,7 @@ services:
 
   db:
     image: postgres
+    shm_size: 1gb
     container_name: db
     user: 996:100
     restart: always
